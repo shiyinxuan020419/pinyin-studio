@@ -68,9 +68,39 @@ function measurePinyin(text, fontSize) {
   return pinyinWidths.get(key);
 }
 
+function paintTitle() {
+  const target = $('titlePreview');
+  const tokens = chars(state.title).map(token => ({...token, pinyin: state.notes.title[token.i] || ''}));
+  const layout = LessonTitleLayout.layoutTokens(tokens, {width: target.clientWidth, measurePinyin});
+  const fragment = document.createDocumentFragment();
+  for (const row of layout.lines) {
+    for (const token of row.tokens) {
+      const cell = createCharacter(token, 'title');
+      cell.style.left = `${token.x}px`;
+      cell.style.top = `${row.y}px`;
+      fragment.append(cell);
+    }
+  }
+  target.style.height = `${layout.height}px`;
+  target.replaceChildren(fragment);
+  target.dataset.advance = layout.advance;
+  target.dataset.rowCount = layout.rowCount;
+  target.dataset.layoutReady = 'true';
+}
+
+function updateScrollCue() {
+  const target = $('articlePreview');
+  const moreBelow = target.scrollHeight - target.clientHeight - target.scrollTop > 1;
+  target.classList.toggle('has-more-below', moreBelow);
+  $('articleScrollHint').hidden = !moreBelow;
+}
+
 function paintBody(layout) {
   const target = $('articlePreview');
   const oldScroll = target.scrollTop;
+  const viewportHeight = LessonScrollCue.viewportHeight(layout, $('articleBodySlot').clientHeight);
+  target.style.height = `${viewportHeight}px`;
+  $('articleBodySlot').style.setProperty('--body-visible-height', `${viewportHeight}px`);
   target.style.setProperty('--char-size', `${layout.fontSize}px`);
   target.style.setProperty('--pinyin-size', `${layout.pinyinFontSize}px`);
   target.style.setProperty('--pinyin-gap', `${layout.pinyinGap}px`);
@@ -78,7 +108,7 @@ function paintBody(layout) {
   target.style.setProperty('--line-gap', `${layout.lineGap}px`);
   target.style.fontSize = `${layout.fontSize}px`;
   target.classList.toggle('is-scrollable', layout.overflow);
-  target.setAttribute('aria-label', layout.overflow ? '课文预览，可上下滚动查看全文' : '课文预览');
+  target.setAttribute('aria-label', layout.overflow ? '课文预览，可上下滚动查看更多内容' : '课文预览');
   const flow = document.createElement('div');
   flow.className = 'article-flow';
   flow.style.height = `${layout.height}px`;
@@ -96,6 +126,7 @@ function paintBody(layout) {
   }
   target.replaceChildren(flow);
   target.scrollTop = oldScroll;
+  updateScrollCue();
   target.dataset.fontSize = layout.fontSize;
   target.dataset.rowCount = layout.rowCount;
   target.dataset.layoutReady = 'true';
@@ -111,6 +142,7 @@ function paintBody(layout) {
 function scheduleBodyLayout() {
   const revision = ++renderRevision;
   $('articlePreview').dataset.layoutReady = 'false';
+  $('titlePreview').dataset.layoutReady = 'false';
   $('layoutStatus').textContent = '正在排版…';
   requestAnimationFrame(async () => {
     // Trigger font requests for newly typed title/body characters before measuring.
@@ -122,13 +154,25 @@ function scheduleBodyLayout() {
     ];
     await Promise.allSettled(fontLoads);
     if (revision !== renderRevision) return;
-    const target = $('articlePreview');
+    paintTitle();
+    const target = $('articleBodySlot');
     const rect = {width: target.clientWidth, height: target.clientHeight};
+    lastBodyRect = `${rect.width}:${rect.height}`;
+    target.closest('.article-top').classList.toggle('no-body-space', rect.width <= 0 || rect.height <= 0);
     if (rect.width <= 0 || rect.height <= 0) {
+      const preview = $('articlePreview');
+      preview.replaceChildren();
+      preview.style.height = '0px';
+      preview.classList.remove('is-scrollable', 'has-more-below');
+      target.style.setProperty('--body-visible-height', '0px');
+      $('articleScrollHint').hidden = true;
+      $('overflowNotice').hidden = true;
+      $('count').textContent = `${chars(state.body).filter(x => !(/\s/.test(x.c))).length} 字 · 手动 ${state.body.split('\n').length} 行`;
       $('layoutStatus').textContent = '正文区域不足，请缩短标题或来源';
+      lastLayout = null;
+      renderSelection();
       return;
     }
-    lastBodyRect = `${rect.width}:${rect.height}`;
     const tokens = chars(state.body).map(token => ({...token, pinyin: state.notes.body[token.i] || ''}));
     const measurements = LessonTextLayout.fontCandidates(SYSTEM_TYPOGRAPHY.baseFontSize).map(fontSize =>
       LessonTextLayout.layoutTokens(tokens, {
@@ -143,7 +187,6 @@ function scheduleBodyLayout() {
 }
 
 function render() {
-  $('titlePreview').replaceChildren(...chars(state.title).map(token => createCharacter(token, 'title')));
   $('sourcePreview').textContent = state.source;
   $('lessonPreview').textContent = `第 ${state.lesson} 课`;
   $('stage').classList.toggle('no-pinyin', !state.showPinyin);
@@ -195,10 +238,11 @@ $('deviceProfile').addEventListener('change', event => {
 });
 new ResizeObserver(resizePreview).observe($('canvasArea'));
 new ResizeObserver(() => {
-  const target = $('articlePreview');
+  const target = $('articleBodySlot');
   const size = `${target.clientWidth}:${target.clientHeight}`;
   if (size !== lastBodyRect) scheduleBodyLayout();
-}).observe($('articlePreview'));
+}).observe($('articleBodySlot'));
+$('articlePreview').addEventListener('scroll', updateScrollCue, {passive: true});
 window.addEventListener('resize', resizePreview);
 document.fonts.addEventListener('loadingdone', () => {
   pinyinWidths.clear();

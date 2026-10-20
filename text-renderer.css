@@ -1,5 +1,13 @@
 /* The flow is laid out in device design coordinates, before preview zoom. */
+.article-body-slot {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.article-top.no-body-space { overflow: hidden; }
 .article-preview {
+  width: 100%;
+  height: 100%;
   scrollbar-width: none;
   overscroll-behavior: contain;
   touch-action: pan-y;
@@ -7,6 +15,22 @@
 }
 .article-preview::-webkit-scrollbar { display: none; }
 .stage-viewport .article-preview.is-scrollable { scrollbar-width: none; }
+.article-preview.is-scrollable.has-more-below {
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 12px), #0006);
+  mask-size: 100% 100%;
+}
+.article-scroll-hint {
+  position: absolute;
+  top: var(--body-visible-height, 100%);
+  left: 50%;
+  width: 24px;
+  height: 12px;
+  transform: translateX(-50%);
+  color: #9a5c32;
+  pointer-events: none;
+}
+.article-scroll-hint[hidden] { display: none; }
+.article-scroll-hint svg { display: block; width: 100%; height: 100%; }
 .article-flow { position: relative; width: 100%; }
 .article-preview .article-line {
   position: absolute;

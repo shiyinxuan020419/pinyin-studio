@@ -18,11 +18,11 @@
 .list-rule{height:0;width:320px;position:relative;flex-shrink:0}
 .list-rule img{position:absolute;left:-1px;top:-1px}
 .source-preview{font-weight:500;line-height:34px}
-/* Each title character and its reading share a measured column and wrap together. */
-.title-preview{font-weight:700;letter-spacing:0;row-gap:16px;align-content:flex-start}
-.title-preview .char{position:relative;display:grid;grid-template-rows:34px 72px;justify-items:center;align-items:start;gap:0;width:max-content;min-width:79.2px;height:106px;padding-right:7.2px}
-.title-preview .glyph{position:static;line-height:72px}
-.title-preview .reading{position:relative;left:auto;top:-9px;width:max-content;height:36px;line-height:36px;transform:none;white-space:nowrap;font-size:36px}
+/* A single measured advance keeps every title glyph equally spaced. */
+.title-preview{position:relative;display:block;font-weight:700;letter-spacing:0;flex-shrink:0}
+.title-preview .char{position:absolute;display:block;width:72px;height:106px}
+.title-preview .glyph{position:absolute;left:0;top:34px;width:72px;line-height:72px;text-align:center}
+.title-preview .reading{position:absolute;left:50%;top:-9px;width:max-content;height:36px;line-height:36px;transform:translateX(-50%);white-space:nowrap;font-size:36px}
 .reading{font-family:'ToneOZ-Quicksnow-W400',sans-serif}
 .article-preview{font-family:'AR PL KaitiM GB',serif;line-height:32px}
 .article-line .glyph{line-height:1}
