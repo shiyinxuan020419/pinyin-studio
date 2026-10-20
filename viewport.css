@@ -1,0 +1,97 @@
+/* Device profiles change logical layout. Workspace preview scale is applied
+   separately to .stage, so resizing the editor never reflows the lesson. */
+.stage[data-profile]:not([data-profile="original"]) .landscape {
+  width: 100%;
+  height: 100%;
+}
+
+.stage[data-profile]:not([data-profile="original"]) .landscape > img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.stage[data-profile]:not([data-profile="original"]) .hud {
+  width: 100%;
+  height: 100%;
+}
+
+.stage[data-profile]:not([data-profile="original"]) .hud-back {
+  left: 57px;
+}
+
+.stage[data-profile]:not([data-profile="original"]) .hud-caption {
+  left: calc(50% - 191px);
+}
+
+.stage[data-profile]:not([data-profile="original"]) .hud-switch {
+  right: 56px;
+  left: auto;
+}
+
+.stage[data-profile]:not([data-profile="original"]) .scroll-panel {
+  left: var(--directory-left);
+  transform: scale(var(--artwork-scale));
+  transform-origin: top left;
+}
+
+.stage[data-profile]:not([data-profile="original"]) .article-panel {
+  left: var(--article-left);
+  top: var(--article-top);
+  width: var(--article-width);
+  height: var(--article-height);
+}
+
+.stage[data-profile]:not([data-profile="original"]) .white-glow {
+  left: calc(var(--article-left) - 55px);
+  right: auto;
+  width: calc(var(--article-width) + 55px);
+}
+
+.stage[data-profile]:not([data-profile="original"]) .class-image {
+  left: var(--illustration-left);
+  top: var(--illustration-top);
+  transform: scale(var(--artwork-scale));
+  transform-origin: top left;
+}
+
+.stage[data-profile]:not([data-profile="original"]) .class-shadow {
+  left: var(--shadow-left);
+  top: var(--shadow-top);
+  transform: scale(var(--artwork-scale));
+  transform-origin: top left;
+}
+
+.stage[data-profile]:not([data-profile="original"]).show-guides::before {
+  left: var(--content-left);
+  width: var(--content-width);
+}
+
+.stage[data-profile]:not([data-profile="original"]).show-guides::after {
+  left: 0;
+  width: 100%;
+}
+
+.stage[data-profile]:not([data-profile="original"]).show-guides .landscape::after {
+  left: 50%;
+  width: min(1440px, calc(100% - 80px));
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+/* Full page and text detail share the same content box and overflow policy.
+   Detail mode changes only the visible frame and the transform on .stage. */
+.stage-viewport .article-preview {
+  overflow: hidden;
+  mask-image: url("assets/imgFrame46.svg");
+}
+
+.stage-viewport .article-preview.is-scrollable {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  mask-image: none;
+  scrollbar-width: thin;
+}

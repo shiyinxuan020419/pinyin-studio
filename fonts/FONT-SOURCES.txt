@@ -1,0 +1,36 @@
+Fonts used by the page
+
+SourceHanSerifSC-UserVF.woff2
+Converted from the user-provided Source Han Serif SC.otf.
+Internal family: Source Han Serif SC VF; version 2.003; CFF2 wght 250-900.
+The supplied file has 13,131 glyphs / 7,082 Unicode mappings.
+License: SIL Open Font License 1.1, SourceHanSerif-LICENSE.txt.
+Original publisher: https://github.com/adobe-fonts/source-han-serif
+Full source is unchanged; only the web font container is converted.
+
+SourceHanSerifSC-UserVF-subset.woff2
+Generated from the same user-provided font for initial UI text, 2026-10-20.
+Internal family renamed to XiaoXiang Serif SC Preview to respect reserved names.
+Glyph outlines and variable weight axis for included characters are retained.
+Subset characters and unicode-range are recorded in sourcehan-user-metadata.json.
+License: SIL Open Font License 1.1, SourceHanSerif-LICENSE.txt.
+
+ToneOZ-Quicksnow-W400.woff2
+Converted from the original ToneOZ-Quicksnow-W400.ttf without glyph modifications.
+https://github.com/jeffreyxuan/toneoz-font-quicksnow
+https://raw.githubusercontent.com/jeffreyxuan/toneoz-font-quicksnow/main/fonts/static_instances/ToneOZ-Quicksnow-W400.ttf
+License: SIL Open Font License 1.1, ToneOZ-OFL.txt.
+
+ gkai00mp.woff2
+AR PL KaitiM GB Regular. Converted from gkai00mp.ttf, 2026-10-20.
+Original font: https://ftp.gnu.org/non-gnu/chinese-fonts-truetype/gkai00mp.ttf.gz
+Original license: https://ftp.gnu.org/non-gnu/chinese-fonts-truetype/LICENSE
+License: ARPHIC PUBLIC LICENSE, ARPHICPL.TXT.
+Modified only by webfont format conversion and insertion of a conversion notice.
+Glyphs are unchanged. The modified font remains freely available under the same license.
+
+SourceHanSerifSC-punctuation.woff2
+4-character subset (space, middle dot, Chinese book-title brackets) from official Adobe Source Han Serif SC VF 2.003 TTF WOFF2. These four characters are absent from the user-provided file.
+https://raw.githubusercontent.com/adobe-fonts/source-han-serif/release/Variable/WOFF2/TTF/SourceHanSerifSC-VF.ttf.woff2
+Internal family renamed to XiaoXiang Serif SC Punctuation. Created 2026-10-20; glyph outlines retained.
+License: SourceHanSerif-LICENSE.txt

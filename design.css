@@ -1,0 +1,34 @@
+/* Design coordinates are in the original 1756 × 1080 canvas. */
+.stage{font-family:'Source Han Serif SC VF',serif;font-synthesis:none}
+.hud{inset:0;width:1756px;height:1080px;padding:0;display:block;pointer-events:none}
+.hud img{position:absolute;max-width:none}
+.hud-back{left:57px;top:149px;width:203px;height:78px}
+.hud-caption{left:703px;top:114px;width:382px;height:144px}
+.hud-switch{left:1460px;top:149px;width:240px;height:78px}
+.lesson-count{display:flex;align-items:center;justify-content:center;gap:8px;height:42px;flex-shrink:0;padding:4px 32px;font-weight:500;line-height:34px}
+.lesson-count b{font-weight:900}
+.lesson-count strong{font-weight:700}
+.lesson-item{width:max-content;height:86px;gap:24px}
+.lesson-item small{display:flex;align-items:center;gap:8px;height:34px;line-height:29px;font-size:20px;font-weight:600}
+.lesson-item small b{font-size:24px;font-weight:900;line-height:34px}
+.lesson-name{font-weight:600}
+.learning-asset{flex-shrink:0}
+.lock-asset{position:relative;width:33px;height:33px;display:block;flex-shrink:0}
+.lock-asset img{position:absolute;left:2.5546875px;top:2.197265625px}
+.list-rule{height:0;width:320px;position:relative;flex-shrink:0}
+.list-rule img{position:absolute;left:-1px;top:-1px}
+.source-preview{font-weight:500;line-height:34px}
+.title-preview{font-weight:700;letter-spacing:7.2px}
+.title-preview .char{position:relative;display:block}
+.title-preview .glyph{position:absolute;left:0;top:34px;line-height:72px}
+.title-preview .reading{position:absolute;left:16px;top:-9px;width:max-content;height:36px;line-height:36px;transform:translateX(-50%);white-space:pre;font-size:36px}
+.reading{font-family:'ToneOZ-Quicksnow-W400',sans-serif}
+.article-preview{font-family:'AR PL KaitiM GB',serif;line-height:32px}
+.article-line .glyph{line-height:1}
+.lesson-badge span{font-weight:500}
+.continue{position:relative;background:none;border:0;border-radius:0;padding:0;box-shadow:none}
+.continue>img{position:absolute;left:-16px;top:-12px;width:372px;height:120px;max-width:none}
+.stage-viewport.text-mode{aspect-ratio:auto;background:#f7eddd}
+.stage.show-guides:before{left:198px;top:176px;width:1360px;height:730px}
+.stage.show-guides:after{left:0;top:136px;width:1756px;height:810px}
+.stage.show-guides .landscape:after{content:'';position:absolute;z-index:9;pointer-events:none;border:1px solid #ff370099;left:158px;top:1px;width:1440px;height:1080px}

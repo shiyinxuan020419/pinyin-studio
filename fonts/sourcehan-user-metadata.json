@@ -1,0 +1,33 @@
+{
+  "user_source": "Source Han Serif SC.otf",
+  "source_sha256": "c2a39a90a0723dc1e327d5b51d5193f42aed55aac21b4dfaf11d5b8f48c71167",
+  "family": "Source Han Serif SC VF",
+  "version": "Version 2.003;hotconv 1.1.1;makeotfexe 2.6.0",
+  "weight_range": [
+    250,
+    900
+  ],
+  "glyph_count": 13131,
+  "unicode_count": 7082,
+  "full_file": "SourceHanSerifSC-UserVF.woff2",
+  "full_bytes": 4338384,
+  "subset_file": "SourceHanSerifSC-UserVF-subset.woff2",
+  "subset_bytes": 26304,
+  "subset_characters": "司马光第课共0123456789/守株待兔精卫填海王戎不取道旁李囊萤夜读《宋史》节选 · 名人故事",
+  "subset_unicode_range": "U+2F,U+30,U+31,U+32,U+33,U+34,U+35,U+36,U+37,U+38,U+39,U+4E0D,U+4E8B,U+4EBA,U+5149,U+5154,U+5171,U+536B,U+53D6,U+53F2,U+53F8,U+540D,U+56CA,U+586B,U+591C,U+5B88,U+5B8B,U+5F85,U+620E,U+6545,U+65C1,U+674E,U+682A,U+6D77,U+738B,U+7B2C,U+7CBE,U+8282,U+8424,U+8BFB,U+8BFE,U+9009,U+9053,U+9A6C",
+  "subset_internal_family": "XiaoXiang Serif SC Preview",
+  "modification": "WOFF2 conversion; subset retains all original glyph outlines and weight variations for included characters. Subset internal names changed to respect reserved name.",
+  "missing_from_user_file": [
+    " ",
+    "·",
+    "《",
+    "》"
+  ],
+  "punctuation_supplement": {
+    "file": "SourceHanSerifSC-punctuation.woff2",
+    "bytes": 2440,
+    "origin": "Official Adobe Source Han Serif SC VF 2.003 TTF WOFF2",
+    "unicode_range": "U+20,U+B7,U+300A,U+300B",
+    "internal_family": "XiaoXiang Serif SC Punctuation"
+  }
+}

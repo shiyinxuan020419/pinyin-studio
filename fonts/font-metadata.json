@@ -1,0 +1,50 @@
+[
+  {
+    "file": "SourceHanSerifSC-UserVF-subset.woff2",
+    "bytes": 26304,
+    "family": "XiaoXiang Serif SC Preview",
+    "style": "Regular",
+    "weight": 250,
+    "unicode_count": 44,
+    "glyph_count": 102,
+    "sha256": "3e88e10afdda41bcffa800bcd8b021dc25ed7d729a4428a0fd0a5ec0e1114208",
+    "weight_range": [
+      250.0,
+      900.0
+    ]
+  },
+  {
+    "file": "SourceHanSerifSC-UserVF.woff2",
+    "bytes": 4338384,
+    "family": "Source Han Serif SC VF",
+    "style": "Regular",
+    "weight": 250,
+    "unicode_count": 7082,
+    "glyph_count": 13131,
+    "sha256": "197d4e1979f75ba7921722a68b05b5bb564536bea715a6ea11cc1bcceb10bf9d",
+    "weight_range": [
+      250.0,
+      900.0
+    ]
+  },
+  {
+    "file": "ToneOZ-Quicksnow-W400.woff2",
+    "bytes": 36488,
+    "family": "ToneOZ-Quicksnow-W400",
+    "style": "Regular",
+    "weight": 400,
+    "unicode_count": 737,
+    "glyph_count": 905,
+    "sha256": "c37ad9d2f4a8f7b1611cbef588434909c2a2ab6fe2f36c0470e801736dea448e"
+  },
+  {
+    "file": "gkai00mp.woff2",
+    "bytes": 1961904,
+    "family": "AR PL KaitiM GB",
+    "style": "Regular",
+    "weight": 400,
+    "unicode_count": 7574,
+    "glyph_count": 7764,
+    "sha256": "989235af9087368f98ea476d891eda80bccffdded02923b730cd1d2ef388f3b5"
+  }
+]

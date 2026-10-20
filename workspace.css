@@ -1,0 +1,639 @@
+/* Keep the editing workspace inside one viewport. The design canvas itself is
+   intentionally untouched: its size and scale are managed by app.js. */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.app-header {
+  height: 44px;
+  min-height: 44px;
+  padding: 0 16px;
+}
+
+.brand {
+  gap: 10px;
+}
+
+.brand-mark {
+  width: 27px;
+  height: 29px;
+  border-radius: 8px 8px 8px 3px;
+  font-size: 18px;
+}
+
+.brand strong {
+  font-size: 15px;
+}
+
+.brand > span:last-child,
+.save-state {
+  font-size: 11px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 304px minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+}
+
+.editor {
+  order: initial;
+  min-width: 0;
+  min-height: 0;
+  max-height: none;
+  overflow: hidden;
+  border-right: 1px solid #e5e7eb;
+}
+
+.editor-heading {
+  flex: 0 0 43px;
+  padding: 8px 14px;
+}
+
+.editor-heading .eyebrow {
+  display: none;
+}
+
+.editor-heading h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.version {
+  padding: 4px 6px;
+  font-size: 10px;
+}
+
+.editor-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 10px 14px;
+  overflow: hidden;
+}
+
+.editor-scroll > .field-row,
+.editor-scroll > .field {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.field-row {
+  gap: 8px;
+}
+
+.lesson-field {
+  width: 54px;
+}
+
+.editor label {
+  font-size: 11px;
+}
+
+.editor input:not([type="range"]):not([type="checkbox"]),
+.editor textarea {
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+
+.editor input:not([type="range"]):not([type="checkbox"]) {
+  height: 31px;
+}
+
+.editor label > input:not([type="checkbox"]):not([type="range"]) {
+  margin-top: 4px;
+}
+
+.editor-scroll > .field:has(#bodyInput) {
+  display: flex;
+  flex: 1 1 190px;
+  flex-direction: column;
+  min-height: 125px;
+}
+
+.editor .label-row {
+  flex: 0 0 auto;
+  min-height: 17px;
+}
+
+.field-help {
+  flex: 0 0 auto;
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 4px 0 6px;
+}
+
+#bodyInput {
+  flex: 1 1 auto;
+  min-height: 50px;
+  height: auto;
+  resize: none;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+.text-actions {
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  gap: 6px;
+  padding-top: 6px;
+}
+
+.text-actions .small-button {
+  padding: 4px 7px;
+  white-space: nowrap;
+}
+
+.text-actions > span {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 9px;
+}
+
+.annotation-card {
+  flex: 0 0 auto;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+.annotation-card h2,
+.layout-options h2 {
+  font-size: 12px;
+}
+
+.tiny-label {
+  padding: 2px 5px;
+  font-size: 9px;
+}
+
+.selection-label {
+  min-height: 17px;
+  max-height: 34px;
+  overflow: auto;
+  margin: 5px 0 6px;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.selection-label b {
+  font-size: 13px;
+}
+
+#pinyinInput {
+  font-size: 11px;
+}
+
+.annotation-card .field-help {
+  margin: 4px 0 0;
+  font-size: 9px;
+}
+
+.tone-keys {
+  gap: 4px;
+  margin: 6px 0;
+}
+
+.tone-keys button {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 25px;
+  padding: 2px;
+  font-size: 12px;
+}
+
+.annotation-actions {
+  gap: 6px;
+}
+
+.annotation-actions button {
+  min-height: 30px;
+  padding: 5px 8px;
+  font-size: 11px;
+}
+
+.form-message {
+  max-height: 30px;
+  overflow: auto;
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+.layout-options {
+  flex: 0 1 103px;
+  min-height: 27px;
+  margin-top: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.layout-options > .label-row {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-bottom: 3px;
+  background: #fff;
+}
+
+.layout-options .range-row {
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 10px;
+}
+
+.layout-options .check-row {
+  margin-top: 10px;
+  font-size: 10px;
+}
+
+.editor-footer {
+  flex: 0 0 34px;
+  align-items: center;
+  padding: 7px 14px;
+}
+
+.editor-footer button {
+  font-size: 10px;
+}
+
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  order: initial;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.preview-toolbar {
+  flex: 0 0 40px;
+  height: 40px;
+  min-height: 40px;
+  gap: 8px;
+  padding: 0 14px;
+}
+
+.preview-toolbar strong {
+  font-size: 12px;
+}
+
+.preview-toolbar > div:first-child {
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.design-note {
+  margin-left: 4px;
+  font-size: 10px;
+}
+
+.view-controls {
+  flex: 0 0 auto;
+  padding: 2px;
+}
+
+.view-button {
+  padding: 5px 8px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.preview-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 12px 14px;
+  overflow: hidden;
+}
+
+.preview-caption {
+  flex: 0 0 auto;
+  gap: 8px;
+  margin: 0;
+  line-height: 16px;
+}
+
+.canvas-area {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stage-viewport {
+  flex: 0 0 auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 7px;
+}
+
+.preview-bottom {
+  flex: 0 0 auto;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.preview-bottom .check-row {
+  flex: 0 0 auto;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.overflow-notice {
+  flex: 0 0 auto;
+  max-height: 36px;
+  overflow: auto;
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.hint-card {
+  display: none;
+}
+
+@media (min-width: 1440px) {
+  .workspace {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .workspace {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+
+  .design-note {
+    display: none;
+  }
+
+  .preview-toolbar,
+  .preview-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .preview-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 9px;
+  }
+
+  .text-actions > span {
+    display: none;
+  }
+}
+
+@media (max-height: 690px) and (min-width: 600px) {
+  .editor-scroll {
+    gap: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .editor-scroll > .field:has(#bodyInput) {
+    min-height: 100px;
+  }
+
+  .annotation-card {
+    padding: 8px;
+  }
+
+  .annotation-card .field-help {
+    display: none;
+  }
+}
+
+/* Small phones retain a bounded preview and an independently scrollable editor. */
+@media (max-width: 599px) {
+  .app-header {
+    padding: 0 10px;
+  }
+
+  .brand {
+    gap: 7px;
+  }
+
+  .brand > span:last-child {
+    font-size: 10px;
+  }
+
+  .save-state {
+    display: none;
+  }
+
+  .workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(165px, 31%) minmax(0, 1fr);
+  }
+
+  .preview-panel {
+    grid-row: 1;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .preview-toolbar {
+    flex-basis: 34px;
+    height: 34px;
+    min-height: 34px;
+  }
+
+  .preview-content {
+    gap: 5px;
+    padding: 6px 10px;
+  }
+
+  .preview-caption {
+    font-size: 9px;
+    line-height: 12px;
+  }
+
+  .preview-bottom {
+    display: none;
+  }
+
+  .editor {
+    grid-row: 2;
+    border-right: 0;
+  }
+
+  .editor-heading {
+    flex-basis: 37px;
+    padding: 6px 14px;
+  }
+
+  .editor-scroll {
+    display: block;
+    overflow-y: auto;
+    padding-top: 9px;
+    padding-bottom: 12px;
+  }
+
+  .editor-scroll > .field-row,
+  .editor-scroll > .field,
+  .annotation-card {
+    margin-bottom: 10px;
+  }
+
+  .editor-scroll > .field:has(#bodyInput) {
+    min-height: 190px;
+    height: 190px;
+  }
+
+  .layout-options {
+    max-height: none;
+    overflow: visible;
+  }
+}
+.layout-options:not([open]){flex:0 0 24px;min-height:24px;overflow:hidden}
+.layout-options[open]{flex:0 0 112px;min-height:112px}
+.layout-options summary{cursor:pointer;list-style:none;height:24px;user-select:none}
+.layout-options summary::-webkit-details-marker{display:none}
+.layout-options[open] .expand-caret{display:inline-block;transform:rotate(180deg)}
+.workspace.preview-expanded{grid-template-columns:minmax(0,1fr)}
+.workspace.preview-expanded .editor{display:none}
+@media(max-width:599px){.workspace.preview-expanded{grid-template-rows:minmax(0,1fr)}.layout-options:not([open]){height:24px}.layout-options[open]{height:auto}.workspace.preview-expanded .preview-content{padding:12px}.workspace.preview-expanded .preview-bottom{display:flex}}
+
+/* Device selection belongs to the workspace, not the virtual lesson canvas. */
+.preview-toolbar {
+  min-width: 0;
+}
+
+.device-picker {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  margin-left: 4px;
+}
+
+#deviceProfile {
+  flex: 0 0 auto;
+  max-width: 120px;
+  height: 27px;
+  padding: 3px 21px 3px 7px;
+  border: 1px solid #dce1e5;
+  border-radius: 5px;
+  color: #515c61;
+  background-color: #fff;
+  font: inherit;
+  font-size: 11px;
+}
+
+#deviceProfile:focus-visible {
+  outline: 3px solid #bdcfbb;
+  outline-offset: 2px;
+}
+
+.preview-toolbar .view-controls {
+  min-width: 0;
+  gap: 2px;
+}
+
+.preview-bottom {
+  flex-wrap: wrap;
+}
+
+.layout-status {
+  flex: 1 1 180px;
+  min-width: 0;
+  color: #6c795f;
+  font-size: 10px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1180px) {
+  .preview-toolbar .design-note {
+    display: none;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) {
+  .preview-toolbar {
+    gap: 5px;
+  }
+
+  .preview-toolbar > div:first-child > .live-dot,
+  .preview-toolbar > div:first-child > strong {
+    display: none;
+  }
+
+  .device-picker {
+    margin-left: 0;
+  }
+
+  .preview-toolbar .view-controls {
+    margin-left: auto;
+  }
+
+  #deviceProfile {
+    max-width: 90px;
+    font-size: 10px;
+  }
+
+  .preview-toolbar .view-button {
+    padding-right: 6px;
+    padding-left: 6px;
+    font-size: 10px;
+  }
+
+  .preview-bottom .layout-status {
+    flex-basis: auto;
+  }
+}
+
+@media (max-width: 599px) {
+  .preview-toolbar {
+    gap: 5px;
+  }
+
+  .preview-toolbar > div:first-child > .live-dot,
+  .preview-toolbar > div:first-child > strong {
+    display: none;
+  }
+
+  .device-picker {
+    margin-left: 0;
+  }
+
+  .preview-toolbar .view-controls {
+    margin-left: auto;
+  }
+
+  #deviceProfile {
+    max-width: 90px;
+    height: 25px;
+    font-size: 10px;
+  }
+
+  .preview-toolbar .view-button {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .preview-bottom .layout-status {
+    flex-basis: auto;
+  }
+}

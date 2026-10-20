@@ -1,0 +1,43 @@
+/* The flow is laid out in device design coordinates, before preview zoom. */
+.article-preview {
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  overflow-x: hidden;
+}
+.article-preview::-webkit-scrollbar { display: none; }
+.stage-viewport .article-preview.is-scrollable { scrollbar-width: none; }
+.article-flow { position: relative; width: 100%; }
+.article-preview .article-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  display: block;
+}
+.article-preview .char {
+  position: absolute;
+  top: 0;
+  width: var(--char-size);
+  height: var(--row-height);
+  gap: var(--pinyin-gap);
+  font-size: var(--char-size);
+}
+.article-preview .reading {
+  flex: 0 0 var(--pinyin-size);
+  height: var(--pinyin-size);
+  line-height: var(--pinyin-size);
+  font-size: var(--pinyin-size);
+  width: max-content;
+}
+.article-preview .glyph {
+  height: var(--char-size);
+  line-height: var(--char-size);
+  white-space: pre;
+}
+.article-preview:focus-visible {
+  outline: 2px solid #ac682b;
+  outline-offset: 5px;
+}
+.layout-status[data-overflow="true"] { color: #97521e; }
