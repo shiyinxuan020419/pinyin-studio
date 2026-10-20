@@ -170,7 +170,7 @@ body {
 }
 
 .annotation-card h2,
-.layout-options h2 {
+.layout-summary h2 {
   font-size: 12px;
 }
 
@@ -231,30 +231,13 @@ body {
   font-size: 10px;
 }
 
-.layout-options {
-  flex: 0 1 103px;
-  min-height: 27px;
-  margin-top: 0;
-  overflow: auto;
-  scrollbar-width: thin;
+.layout-summary {
+  flex: 0 0 24px;
+  min-height: 24px;
 }
 
-.layout-options > .label-row {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  padding-bottom: 3px;
-  background: #fff;
-}
-
-.layout-options .range-row {
-  gap: 8px;
-  margin-top: 10px;
-  font-size: 10px;
-}
-
-.layout-options .check-row {
-  margin-top: 10px;
+.layout-summary .check-row {
+  margin: 0;
   font-size: 10px;
 }
 
@@ -502,19 +485,10 @@ body {
     height: 190px;
   }
 
-  .layout-options {
-    max-height: none;
-    overflow: visible;
-  }
 }
-.layout-options:not([open]){flex:0 0 24px;min-height:24px;overflow:hidden}
-.layout-options[open]{flex:0 0 112px;min-height:112px}
-.layout-options summary{cursor:pointer;list-style:none;height:24px;user-select:none}
-.layout-options summary::-webkit-details-marker{display:none}
-.layout-options[open] .expand-caret{display:inline-block;transform:rotate(180deg)}
 .workspace.preview-expanded{grid-template-columns:minmax(0,1fr)}
 .workspace.preview-expanded .editor{display:none}
-@media(max-width:599px){.workspace.preview-expanded{grid-template-rows:minmax(0,1fr)}.layout-options:not([open]){height:24px}.layout-options[open]{height:auto}.workspace.preview-expanded .preview-content{padding:12px}.workspace.preview-expanded .preview-bottom{display:flex}}
+@media(max-width:599px){.workspace.preview-expanded{grid-template-rows:minmax(0,1fr)}.workspace.preview-expanded .preview-content{padding:12px}.workspace.preview-expanded .preview-bottom{display:flex}}
 
 /* Device selection belongs to the workspace, not the virtual lesson canvas. */
 .preview-toolbar {

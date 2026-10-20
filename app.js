@@ -1,10 +1,12 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const STORAGE='xiaoxiang-lesson-editor-v1';
+const SYSTEM_TYPOGRAPHY=Object.freeze({baseFontSize:32,baseLineGap:4});
 const exampleText='群儿戏于庭，\n一儿登瓮，足跌没水中。\n众皆弃去，光持石击瓮破之，\n水迸，儿得活。\n水迸，儿得活。';
 const han=c=>/\p{Script=Han}/u.test(c);
-function sample(){const notes={};for(const [c,p] of [['于','yu'],['瓮','wèng'],['跌','diē'],['皆','jiē'],['弃','qì'],['持','chí'],['迸','bèng']]){let n=exampleText.indexOf(c);if(n>=0)notes[n]=p;if(c==='迸')notes[exampleText.lastIndexOf(c)]=p;}return {title:'司马光',body:exampleText,source:'《宋史》节选 · 名人故事',lesson:8,notes:{title:{0:'sī'},body:notes},fontSize:32,lineGap:4,showPinyin:true,previewProfile:'original',version:2};}
-let state=sample();try{const s=JSON.parse(localStorage.getItem(STORAGE));if(s&&typeof s.body==='string'&&typeof s.title==='string'&&s.notes?.body&&s.notes?.title){state={...sample(),...s,version:2,previewProfile:LessonViewport.getProfile(s.previewProfile).id,fontSize:Math.min(44,Math.max(24,+s.fontSize||32)),lineGap:Math.min(24,Math.max(0,+s.lineGap||0))};}}catch{}
+function sample(){const notes={};for(const [c,p] of [['于','yu'],['瓮','wèng'],['跌','diē'],['皆','jiē'],['弃','qì'],['持','chí'],['迸','bèng']]){let n=exampleText.indexOf(c);if(n>=0)notes[n]=p;if(c==='迸')notes[exampleText.lastIndexOf(c)]=p;}return {title:'司马光',body:exampleText,source:'《宋史》节选 · 名人故事',lesson:8,notes:{title:{0:'sī'},body:notes},fontSize:SYSTEM_TYPOGRAPHY.baseFontSize,lineGap:SYSTEM_TYPOGRAPHY.baseLineGap,showPinyin:true,previewProfile:'original',version:2};}
+// Preserve lesson content from older drafts while applying the shared typography policy.
+let state=sample();try{const s=JSON.parse(localStorage.getItem(STORAGE));if(s&&typeof s.body==='string'&&typeof s.title==='string'&&s.notes?.body&&s.notes?.title){state={...sample(),...s,version:2,previewProfile:LessonViewport.getProfile(s.previewProfile).id,fontSize:SYSTEM_TYPOGRAPHY.baseFontSize,lineGap:SYSTEM_TYPOGRAPHY.baseLineGap};}}catch{}
 let selection={field:'body',start:0,end:0},mode='full',saveTimer,toastTimer;
 const inputs={title:$('titleInput'),body:$('bodyInput')};
 function chars(text){let n=0;return Array.from(text,c=>{const item={c,i:n};n+=c.length;return item;});}
@@ -30,7 +32,6 @@ function createCharacter({c, i}, field) {
   const reading = document.createElement('span');
   reading.className = 'reading';
   reading.textContent = state.notes[field][i] || '';
-  if (field === 'title' && reading.textContent) reading.textContent = '   ' + reading.textContent;
   const glyph = document.createElement('span');
   glyph.className = 'glyph';
   glyph.textContent = c;
@@ -101,7 +102,7 @@ function paintBody(layout) {
   $('overflowNotice').hidden = !layout.overflow;
   const status = $('layoutStatus');
   status.dataset.overflow = String(layout.overflow);
-  status.textContent = `基准 ${state.fontSize} → 当前 ${layout.fontSize} · ${layout.rowCount} 行 · ${layout.overflow ? '可上下滚动' : '一屏完整'}`;
+  status.textContent = `当前字号 ${layout.fontSize} · ${layout.rowCount} 行 · ${layout.overflow ? '可上下滚动' : '一屏完整'}`;
   $('count').textContent = `${chars(state.body).filter(x => !(/\s/.test(x.c))).length} 字 · 手动 ${state.body.split('\n').length} 行 / 渲染 ${layout.rowCount} 行`;
   lastLayout = layout;
   renderSelection();
@@ -129,11 +130,11 @@ function scheduleBodyLayout() {
     }
     lastBodyRect = `${rect.width}:${rect.height}`;
     const tokens = chars(state.body).map(token => ({...token, pinyin: state.notes.body[token.i] || ''}));
-    const measurements = LessonTextLayout.fontCandidates(state.fontSize).map(fontSize =>
+    const measurements = LessonTextLayout.fontCandidates(SYSTEM_TYPOGRAPHY.baseFontSize).map(fontSize =>
       LessonTextLayout.layoutTokens(tokens, {
         width: rect.width,
         fontSize,
-        lineGap: state.lineGap * fontSize / state.fontSize,
+        lineGap: SYSTEM_TYPOGRAPHY.baseLineGap * fontSize / SYSTEM_TYPOGRAPHY.baseFontSize,
         measurePinyin
       })
     );
@@ -145,8 +146,6 @@ function render() {
   $('titlePreview').replaceChildren(...chars(state.title).map(token => createCharacter(token, 'title')));
   $('sourcePreview').textContent = state.source;
   $('lessonPreview').textContent = `第 ${state.lesson} 课`;
-  $('fontSizeValue').textContent = state.fontSize;
-  $('lineGapValue').textContent = state.lineGap + ' px';
   $('stage').classList.toggle('no-pinyin', !state.showPinyin);
   LessonViewport.applyProfile($('stage'), state.previewProfile);
   scheduleBodyLayout();
@@ -158,8 +157,6 @@ function syncInputs() {
   inputs.body.value = state.body;
   $('sourceInput').value = state.source;
   $('lessonInput').value = state.lesson;
-  $('fontSize').value = state.fontSize;
-  $('lineGap').value = state.lineGap;
   $('showPinyin').checked = state.showPinyin;
   $('deviceProfile').value = state.previewProfile;
   render();
@@ -186,11 +183,11 @@ $('removePinyin').addEventListener('click',()=>{selectedChars().forEach(({i})=>d
 for(const tone of ['ā','á','ǎ','à','ü','ǖ','ǘ','ǚ','ǜ']){const btn=document.createElement('button');btn.type='button';btn.textContent=tone;btn.setAttribute('aria-label','输入 '+tone);btn.addEventListener('click',()=>{const input=$('pinyinInput');const start=input.selectionStart??input.value.length,end=input.selectionEnd??start;input.setRangeText(tone,start,end,'end');input.focus();});document.querySelector('.tone-keys').append(btn);}
 $('insertBreak').addEventListener('click',()=>{const pos=inputs.body.selectionEnd;const value=state.body.slice(0,pos)+'\n'+state.body.slice(pos);updateText('body',value);inputs.body.value=value;inputs.body.focus();inputs.body.setSelectionRange(pos+1,pos+1);captureSelection('body');});
 $('sentenceBreak').addEventListener('click',()=>{let text='',notes={};const source=chars(state.body);source.forEach(({c,i},n)=>{if(state.notes.body[i])notes[text.length]=state.notes.body[i];text+=c;if(/[。！？!?]/.test(c)&&n<source.length-1&&source[n+1].c!=='\n'&&!/[”’」』]/.test(source[n+1].c))text+='\n';if(/[”’」』]/.test(c)&&n>0&&/[。！？!?]/.test(source[n-1].c)&&n<source.length-1&&source[n+1].c!=='\n')text+='\n';});state.body=text;state.notes.body=notes;inputs.body.value=text;selection={field:'body',start:0,end:0};render();annotationForm();save();announce('已按句号、问号和叹号换行');});
-for(const field of ['fontSize','lineGap'])$(field).addEventListener('input',e=>{state[field]=+e.target.value;render();save();});$('showPinyin').addEventListener('change',e=>{state.showPinyin=e.target.checked;render();save();});
+$('showPinyin').addEventListener('change',e=>{state.showPinyin=e.target.checked;render();save();});
 function setMode(next){mode=next;$('stageViewport').classList.toggle('text-mode',mode==='text');if(mode==='full')$('stageViewport').style.height='';$('viewFull').classList.toggle('active',mode==='full');$('viewText').classList.toggle('active',mode==='text');$('viewFull').setAttribute('aria-pressed',mode==='full');$('viewText').setAttribute('aria-pressed',mode==='text');$('previewCaption').textContent=mode==='full'?'课节目录 · 整体效果':'课文排版 · 文字特写';resizePreview();}
 $('viewFull').onclick=()=>setMode('full');$('viewText').onclick=()=>setMode('text');$('guides').onchange=e=>$('stage').classList.toggle('show-guides',e.target.checked);
 $('reset').onclick=()=>{if(!confirm('恢复 Figma 设计稿示例？当前编辑内容将被替换，可先导出配置保存。'))return;state=sample();selection={field:'body',start:0,end:0};syncInputs();save();announce('已恢复设计稿示例');};
-$('export').onclick=()=>{const blob=new Blob([JSON.stringify({...state,version:2,layoutPolicy:{scales:[1,0.9375,0.875],overflow:'scroll'}},null,2)],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='小象语文-课文排版.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);announce('已导出文字、拼音和排版配置');};
+$('export').onclick=()=>{const blob=new Blob([JSON.stringify({...state,version:2,layoutPolicy:{...SYSTEM_TYPOGRAPHY,scales:[1,0.9375,0.875],overflow:'scroll'}},null,2)],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='小象语文-课文排版.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);announce('已导出文字、拼音和排版配置');};
 $('deviceProfile').addEventListener('change', event => {
   state.previewProfile = LessonViewport.getProfile(event.target.value).id;
   render();
